@@ -1,22 +1,17 @@
-
 'use client';
 import { useState } from "react";
 import { FaCalendar, FaDollarSign } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa";
 
 
-  {/* Constante para hacer la conversion a la moneda de pesos dominicanos */}
-export const RD = (value) =>{
-    return Number(value).toLocaleString('es-DO', { style: 'currency', currency: 'DOP' });
-  }
 
-{/* Funcion de calcular cuota con los parametros monto, interes y plazo */}
+
 const calcularcuota = (monto, interes, plazo) => {
   const montoNum = parseFloat(monto);
   const interesNum = parseFloat(interes) / 100 / 12;
   const plazoNum = parseInt(plazo);
 
-  if (!montoNum || !interesNum || !plazoNum) return { totalapagar: 0, totalinteres: 0, totalpagado: 0 };
+  if (!montoNum || !interesNum || !plazoNum) return { totalapagar: "", totalinteres: "", totalpagado: "" };
 
   const cuota = (montoNum * (interesNum * Math.pow(1 + interesNum, plazoNum))) / (Math.pow(1 + interesNum, plazoNum) - 1);
   const totalapagar = cuota * plazoNum;
@@ -33,7 +28,7 @@ export default function Home() {
   const [totalinteres, setTotalinteres] = useState(null);
   const [totalpagado, setTotalpagado] = useState(null);
   const [amortizacion, setAmortizacion] = useState(null);
-{/* Funcion para mostrar los resultados del calculo  */}
+
   const handlecalcularcuota = () => {
     const resultados = calcularcuota(monto, interes, plazo);
     setTotalapagar(resultados.totalapagar);
@@ -41,11 +36,11 @@ export default function Home() {
     setTotalinteres(resultados.totalinteres);
     setTotalpagado(resultados.totalpagado);
   };
-{/* Funcion para mostrar los resultados en la tabla de amortizacion */}
+
   const handleTablaAmortizacion = () => {
     setAmortizacion(!amortizacion);
   };
-{/* HTML Y Tailwind para diseño de interfaz, gestionada con STICH */}
+
   return (
     <div className="bg-slate-50 dark:bg-slate-900 font-sans flex items-center justify-center min-h-screen p-4 sm:p-6">
       <div className="w-full max-w-4xl mx-auto">
@@ -61,7 +56,7 @@ export default function Home() {
                   <FaDollarSign size={20} className="text-green-500 mr-2" />
                   Monto del Préstamo
                 </label>
-                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number"  value={monto} onChange={(e) => setMonto(Number(e.target.value))} />
+                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number"  value={monto} onChange={(e) => {const valor = e.target.value; if (valor === "") { setMonto(""); return;} { setMonto(Number(valor));}}} />
                 <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 ml-1 ">RD$500,000.00</p>
               </div>
               <div>
@@ -69,7 +64,7 @@ export default function Home() {
                   <FaChartLine size={20} className="text-blue-500 mr-2" />
                   Tasa Anual (%)
                 </label>
-                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number" value={interes} onChange={(e) => setInteres(Number(e.target.value))} />
+                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number" value={interes} onChange={(e) => {const valor = e.target.value; if (valor === "") { setInteres(""); return; }setInteres(Number(valor));}} />
                 <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 ml-1">12% mensual</p>
               </div>
               <div>
@@ -77,7 +72,7 @@ export default function Home() {
                   <FaCalendar size={20} className="text-blue-500 mr-2" />
                   Plazo (meses)
                 </label>
-                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number" value={plazo} onChange={(e) => setPlazo(Number(e.target.value))} />
+                <input className="w-full border bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden" type="number" value={plazo} onChange={(e) => {const valor= e.target.value; if (valor === "") { setPlazo(""); return;} setPlazo(Number(valor));}} />
                 <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5 ml-1"> 24 meses</p>
               </div>
             </div>
@@ -125,9 +120,11 @@ export default function Home() {
                     const interesNum = parseFloat(interes) / 100 / 12;
                     const plazoNum = parseInt(plazo);
                     const cuota = (montoNum * (interesNum * Math.pow(1 + interesNum, plazoNum))) / (Math.pow(1 + interesNum, plazoNum) - 1);
+                    
                     let saldo = montoNum;
                     const filas = [];
 
+                    if (isNaN(montoNum) || isNaN(interesNum)  || isNaN(plazoNum)) return filas;
                     for (let i = 1; i <= plazoNum; i++) {
                       const interesMes = saldo * interesNum;
                       const capitalMes = cuota - interesMes;
@@ -140,7 +137,6 @@ export default function Home() {
                         saldo: Math.max(0, saldo)
                       });
                     }
-                    {/* renderizado con .map para recorrer el array anterior filas.push */}
                     return filas;
                   })().map((fila, index) => (
                     <tr key={fila.mes} className={`border-b dark:border-slate-600 ${index % 2 === 0 ? 'bg-slate-50 dark:bg-slate-700' : 'bg-white dark:bg-slate-800'}`}>
@@ -164,3 +160,6 @@ export default function Home() {
     </div>
   );
 }
+  export const RD = (value) =>{
+    return Number(value).toLocaleString('es-DO', { style: 'currency', currency: 'DOP' });
+  }
