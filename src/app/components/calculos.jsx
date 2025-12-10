@@ -1,4 +1,4 @@
-{/* Uso de Libreria use State de React*/}
+
 "use client";
 import { useState } from "react";
 {/* Para renderizar en la UI*/}
@@ -91,7 +91,4 @@ export const calcularcuota = (monto, interes, plazo) => {
     
   };
   };
-  {/* Constante para hacer la conversion a la moneda de pesos dominicanos */}
-  export const RD = (value) =>{
-    return Number(value).toLocaleString('es-DO', { style: 'currency', currency: 'DOP' });
-  }
+

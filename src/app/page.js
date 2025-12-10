@@ -1,10 +1,14 @@
-{/* Librerias para el manejo de iconos */}
+
 'use client';
 import { useState } from "react";
 import { FaCalendar, FaDollarSign } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa";
-import { RD } from "./components/calculos.jsx";
 
+
+  {/* Constante para hacer la conversion a la moneda de pesos dominicanos */}
+export const RD = (value) =>{
+    return Number(value).toLocaleString('es-DO', { style: 'currency', currency: 'DOP' });
+  }
 
 {/* Funcion de calcular cuota con los parametros monto, interes y plazo */}
 const calcularcuota = (monto, interes, plazo) => {
